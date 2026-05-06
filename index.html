@@ -8,7 +8,7 @@
 
 <h1>Waiting for orders...</h1>
 
-<button onclick="enableSound()">Enable Sound 🔊</button>
+<p>Click anywhere once to activate sound 🔊</p>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -24,49 +24,64 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-let soundEnabled = false;
 let audioContext;
+let soundEnabled = false;
 
-// 🔊 إنشاء صوت ثابت (مرة واحدة فقط)
+// 🔊 init مرة واحدة
 function initAudio() {
-  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  soundEnabled = true;
+  console.log("Sound Enabled");
 }
 
-// 🔊 beep قوي ومضمون
+// 🔥 صوت أقوى وأطول
 function playBeep() {
   if (!audioContext) return;
 
   const oscillator = audioContext.createOscillator();
   const gain = audioContext.createGain();
 
+  oscillator.type = "square"; // أقوى من sine
+  oscillator.frequency.value = 1200;
+
+  gain.gain.value = 0.5;
+
   oscillator.connect(gain);
   gain.connect(audioContext.destination);
-
-  oscillator.type = "sine";
-  oscillator.frequency.value = 1000;
-  gain.gain.value = 0.2;
 
   oscillator.start();
 
   setTimeout(() => {
     oscillator.stop();
-  }, 200);
+  }, 600); // أطول صوت
 }
 
-// 🔊 تفعيل الصوت
-function enableSound() {
+// 🔥 Auto enable عند أول تفاعل
+function autoEnable() {
   initAudio();
-  playBeep();
-  soundEnabled = true;
-  console.log("Sound Enabled");
+  document.removeEventListener("click", autoEnable);
+  document.removeEventListener("scroll", autoEnable);
+  document.removeEventListener("keydown", autoEnable);
 }
+
+// أي interaction يشغل الصوت
+document.addEventListener("click", autoEnable);
+document.addEventListener("scroll", autoEnable);
+document.addEventListener("keydown", autoEnable);
 
 // 🔔 Firebase listener
 db.ref("orders").on("child_added", function(snapshot) {
 
   console.log("New Order 🔥", snapshot.val());
 
-  if (soundEnabled && audioContext) {
+  if (soundEnabled) {
     playBeep();
   }
 

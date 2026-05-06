@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Orders Monitor</title>
 </head>
 <body>
 
 <h1>Waiting for orders...</h1>
 
-<button onclick="enableSound()">Enable Sound</button>
+<button onclick="enableSound()">Enable Sound 🔊</button>
 
-<audio id="alert" src="https://www.soundjay.com/buttons/sounds/beep-01a.mp3"></audio>
+<!-- 🔥 صوت مضمون (Google hosted) -->
+<audio id="alert" preload="auto">
+  <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+</audio>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
 
+// 🔥 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBFI9O0DcZcZJJgwFp6cCgd8PJU2PRC9z8",
   databaseURL: "https://orders-app-34ff4-default-rtdb.firebaseio.com"
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.database();
 
 let soundEnabled = false;
 
-// 🔥 مهم: تشغيل وهمي للصوت عشان المتصفح يسمح
+// 🔊 تفعيل الصوت (مهم جدًا للمتصفح)
 function enableSound() {
   const audio = document.getElementById("alert");
 
-  audio.play()
-    .then(() => {
-      audio.pause();
-      audio.currentTime = 0;
+  audio.play().then(() => {
+    audio.pause();
+    audio.currentTime = 0;
 
-      soundEnabled = true;
-      alert("Sound Enabled 🔊");
-    })
-    .catch(err => {
-      console.log("Sound blocked:", err);
-    });
+    soundEnabled = true;
+    alert("Sound Enabled 🔊");
+  }).catch(err => {
+    console.log("Sound blocked:", err);
+  });
 }
 
 // 🔔 استقبال الأوردرات
@@ -52,7 +54,10 @@ db.ref("orders").on("child_added", function(snapshot) {
   if (soundEnabled) {
     const audio = document.getElementById("alert");
     audio.currentTime = 0;
-    audio.play();
+
+    audio.play().catch(err => {
+      console.log("Play blocked:", err);
+    });
   }
 
 });

@@ -10,11 +10,6 @@
 
 <button onclick="enableSound()">Enable Sound 🔊</button>
 
-<!-- 🔥 صوت مضمون (Google hosted) -->
-<audio id="alert" preload="auto">
-  <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
-</audio>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -31,33 +26,43 @@ const db = firebase.database();
 
 let soundEnabled = false;
 
-// 🔊 تفعيل الصوت (مهم جدًا للمتصفح)
-function enableSound() {
-  const audio = document.getElementById("alert");
+// 🔊 صوت داخلي (بدون أي ملفات)
+function playBeep() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const context = new AudioContext();
 
-  audio.play().then(() => {
-    audio.pause();
-    audio.currentTime = 0;
+  const oscillator = context.createOscillator();
+  const gainNode = context.createGain();
 
-    soundEnabled = true;
-    alert("Sound Enabled 🔊");
-  }).catch(err => {
-    console.log("Sound blocked:", err);
-  });
+  oscillator.type = "sine";
+  oscillator.frequency.value = 900; // نغمة
+  gainNode.gain.value = 0.2;
+
+  oscillator.connect(gainNode);
+  gainNode.connect(context.destination);
+
+  oscillator.start();
+
+  setTimeout(() => {
+    oscillator.stop();
+    context.close();
+  }, 200);
 }
 
-// 🔔 استقبال الأوردرات
+// 🔊 تفعيل الصوت (لازم ضغط المستخدم)
+function enableSound() {
+  playBeep();
+  soundEnabled = true;
+  alert("Sound Enabled 🔊");
+}
+
+// 🔔 استقبال الأوردرات من Firebase
 db.ref("orders").on("child_added", function(snapshot) {
 
   console.log("New Order 🔥", snapshot.val());
 
   if (soundEnabled) {
-    const audio = document.getElementById("alert");
-    audio.currentTime = 0;
-
-    audio.play().catch(err => {
-      console.log("Play blocked:", err);
-    });
+    playBeep();
   }
 
 });

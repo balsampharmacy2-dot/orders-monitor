@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Orders Monitor</title>
+</head>
+<body>
+
+<h1>Waiting for orders...</h1>
+
+<button onclick="enableSound()">Enable Sound</button>
+
+<audio id="alert" preload="auto">
+  <source src="https://www.soundjay.com/buttons/sounds/beep-01a.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  databaseURL: "YOUR_DATABASE_URL"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+let soundEnabled = false;
+
+function enableSound() {
+  const audio = document.getElementById("alert");
+
+  audio.play().then(() => {
+    audio.pause();
+    audio.currentTime = 0;
+    soundEnabled = true;
+    alert("Sound enabled");
+  }).catch((err) => {
+    console.log(err);
+    alert("Browser blocked sound");
+  });
+}
+
+db.ref("orders").on("child_added", function(snapshot) {
+  console.log("New Order:", snapshot.val());
+
+  if (soundEnabled) {
+    const audio = document.getElementById("alert");
+    audio.currentTime = 0;
+    audio.play();
+  }
+});
+</script>
+
+</body>
+</html>

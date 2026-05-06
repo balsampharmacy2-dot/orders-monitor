@@ -15,7 +15,7 @@
 
 <script>
 
-// 🔥 Firebase config
+// 🔥 Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBFI9O0DcZcZJJgwFp6cCgd8PJU2PRC9z8",
   databaseURL: "https://orders-app-34ff4-default-rtdb.firebaseio.com"
@@ -25,43 +25,48 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 let soundEnabled = false;
+let audioContext;
 
-// 🔊 صوت داخلي (بدون أي ملفات)
+// 🔊 إنشاء صوت ثابت (مرة واحدة فقط)
+function initAudio() {
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+// 🔊 beep قوي ومضمون
 function playBeep() {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  const context = new AudioContext();
+  if (!audioContext) return;
 
-  const oscillator = context.createOscillator();
-  const gainNode = context.createGain();
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
 
   oscillator.type = "sine";
-  oscillator.frequency.value = 900; // نغمة
-  gainNode.gain.value = 0.2;
-
-  oscillator.connect(gainNode);
-  gainNode.connect(context.destination);
+  oscillator.frequency.value = 1000;
+  gain.gain.value = 0.2;
 
   oscillator.start();
 
   setTimeout(() => {
     oscillator.stop();
-    context.close();
   }, 200);
 }
 
-// 🔊 تفعيل الصوت (لازم ضغط المستخدم)
+// 🔊 تفعيل الصوت
 function enableSound() {
+  initAudio();
   playBeep();
   soundEnabled = true;
-  alert("Sound Enabled 🔊");
+  console.log("Sound Enabled");
 }
 
-// 🔔 استقبال الأوردرات من Firebase
+// 🔔 Firebase listener
 db.ref("orders").on("child_added", function(snapshot) {
 
   console.log("New Order 🔥", snapshot.val());
 
-  if (soundEnabled) {
+  if (soundEnabled && audioContext) {
     playBeep();
   }
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,277 +8,62 @@
 
 <title>Orders Control Center</title>
 
-<!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<!-- Manifest -->
-<link rel="manifest" href="manifest.json">
 
 <style>
 
-/* =========================
-   BODY
-========================= */
-
 body{
-    background:
-    radial-gradient(circle at top,#111827,#020617);
+    background: radial-gradient(circle at top,#111827,#020617);
     color:white;
-    font-family:Arial,sans-serif;
+    font-family:Arial;
     min-height:100vh;
-    overflow-x:hidden;
 }
-
-/* =========================
-   NAVBAR
-========================= */
 
 .navbar-custom{
-
     background:rgba(255,255,255,.05);
-
     backdrop-filter:blur(14px);
-
-    border-bottom:
-    1px solid rgba(255,255,255,.08);
-
-    padding:15px 20px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding:15px;
 }
-
-/* =========================
-   LIVE BADGE
-========================= */
 
 .live-badge{
-
     background:#22c55e;
-
     color:black;
-
-    font-weight:bold;
-
-    padding:6px 12px;
-
+    padding:5px 10px;
     border-radius:999px;
-
-    font-size:13px;
+    font-size:12px;
 }
-
-/* =========================
-   STATS CARD
-========================= */
 
 .stats-card{
-
-    background:
-    rgba(255,255,255,.05);
-
-    border:
-    1px solid rgba(255,255,255,.08);
-
-    border-radius:24px;
-
-    padding:25px;
-
-    backdrop-filter:blur(12px);
-
-    box-shadow:
-    0 10px 35px rgba(0,0,0,.3);
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:20px;
 }
-
-.stats-title{
-
-    color:#94a3b8;
-
-    font-size:14px;
-}
-
-.stats-number{
-
-    font-size:40px;
-
-    font-weight:bold;
-
-    margin-top:10px;
-}
-
-/* =========================
-   ORDER CARD
-========================= */
 
 .order-card{
-
-    background:
-    rgba(255,255,255,.05);
-
-    border:
-    1px solid rgba(255,255,255,.08);
-
-    border-radius:20px;
-
-    padding:20px;
-
-    backdrop-filter:blur(12px);
-
-    box-shadow:
-    0 10px 35px rgba(0,0,0,.3);
-
-    animation:show .35s ease;
-
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:15px;
     position:relative;
-
-    overflow:hidden;
-}
-
-.order-card::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:200%;
-    height:200%;
-
-    background:
-    linear-gradient(
-        45deg,
-        transparent,
-        rgba(56,189,248,.08),
-        transparent
-    );
-
-    top:-50%;
-    left:-50%;
-
-    transform:rotate(25deg);
+    animation:show .3s ease;
 }
 
 .order-title{
-
-    font-size:18px;
-
     font-weight:bold;
-
-    margin-bottom:10px;
+    font-size:16px;
 }
 
-.order-text{
-
-    color:#cbd5e1;
-
-    font-size:14px;
-
-    line-height:1.6;
-
-    word-break:break-word;
+.done{
+    opacity:.5;
+    text-decoration:line-through;
 }
-
-/* =========================
-   TOAST
-========================= */
-
-.toast-custom{
-
-    position:fixed;
-
-    top:20px;
-    right:20px;
-
-    z-index:9999;
-
-    background:
-    linear-gradient(
-        135deg,
-        #22c55e,
-        #16a34a
-    );
-
-    color:black;
-
-    padding:14px 18px;
-
-    border-radius:16px;
-
-    font-weight:bold;
-
-    box-shadow:
-    0 10px 30px rgba(0,0,0,.4);
-
-    animation:slide .3s ease;
-}
-
-/* =========================
-   ALERT BUTTON
-========================= */
-
-#alertToggle{
-
-    border-radius:14px;
-
-    font-weight:bold;
-
-    padding:10px 18px;
-}
-
-/* =========================
-   ANIMATIONS
-========================= */
 
 @keyframes show{
-
-    from{
-        opacity:0;
-        transform:
-        translateY(20px)
-        scale(.95);
-    }
-
-    to{
-        opacity:1;
-        transform:
-        translateY(0)
-        scale(1);
-    }
-
-}
-
-@keyframes slide{
-
-    from{
-        opacity:0;
-        transform:
-        translateX(120px);
-    }
-
-    to{
-        opacity:1;
-        transform:
-        translateX(0);
-    }
-
-}
-
-/* =========================
-   FLASH
-========================= */
-
-.flash{
-    animation:flash .4s;
-}
-
-@keyframes flash{
-
-    0%{
-        background:#14532d;
-    }
-
-    100%{
-        background:transparent;
-    }
-
+    from{opacity:0;transform:translateY(10px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
 </style>
@@ -288,404 +72,142 @@ body{
 
 <body>
 
-<!-- =========================
-     NAVBAR
-========================= -->
+<!-- HEADER -->
+<nav class="navbar navbar-custom d-flex justify-content-between">
 
-<nav class="navbar navbar-custom">
+    <div class="d-flex gap-3 align-items-center">
 
-<div class="container-fluid">
+        <h5 class="m-0">⚡ Orders Control</h5>
 
-    <div class="d-flex align-items-center gap-3">
-
-        <h4 class="m-0">
-            <i class="fa-solid fa-bolt"></i>
-            Orders Control
-        </h4>
-
-        <div class="live-badge">
-            LIVE
-        </div>
+        <div class="live-badge">LIVE</div>
 
     </div>
-
-    <button
-    class="btn btn-success"
-    id="alertToggle">
-
-        <i class="fa-solid fa-volume-high"></i>
-        Enable Alerts
-
-    </button>
-
-</div>
 
 </nav>
 
-<!-- =========================
-     CONTENT
-========================= -->
+<!-- STATS -->
+<div class="container mt-3">
 
-<div class="container py-4">
+<div class="stats-card mb-3">
+    <div>Total Orders</div>
+    <h2 id="counter">0</h2>
+</div>
 
-    <!-- Stats -->
-
-    <div class="stats-card mb-4">
-
-        <div class="stats-title">
-            TOTAL NOTIFICATIONS
-        </div>
-
-        <div
-        class="stats-number"
-        id="counter">
-
-            0
-
-        </div>
-
-    </div>
-
-    <!-- Orders -->
-
-    <div
-    class="d-grid gap-3"
-    id="orders">
-
-    </div>
+<!-- ORDERS -->
+<div id="orders" class="d-grid gap-3"></div>
 
 </div>
 
-<!-- Firebase -->
-
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<!-- jQuery -->
-
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script>
 
-/* =========================
-   FIREBASE
-========================= */
-
+/* FIREBASE */
 const firebaseConfig = {
-
-    apiKey:
-    "AIzaSyBFI9O0DcZcZJJgwFp6cCgd8PJU2PRC9z8",
-
-    databaseURL:
-    "https://orders-app-34ff4-default-rtdb.firebaseio.com"
-
+    apiKey: "YOUR_API_KEY",
+    databaseURL: "YOUR_DB_URL"
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.database();
 
-/* =========================
-   AUDIO
-========================= */
+/* VARIABLES */
+let orderNumber = 0;
 
-let audioEnabled = false;
-
-let audioContext = null;
-
-/* init audio */
-
-async function initAudio(){
-
-    if(!audioContext){
-
-        audioContext =
-        new (
-            window.AudioContext ||
-            window.webkitAudioContext
-        )();
-
-    }
-
-    if(audioContext.state === "suspended"){
-        await audioContext.resume();
-    }
-
-}
-
-/* beep */
-
-async function playBeep(){
-
-    if(!audioEnabled) return;
-
-    if(!audioContext) return;
-
-    const osc1 =
-    audioContext.createOscillator();
-
-    const osc2 =
-    audioContext.createOscillator();
-
-    const gain =
-    audioContext.createGain();
-
-    osc1.type = "square";
-    osc2.type = "square";
-
-    osc1.frequency.value = 900;
-    osc2.frequency.value = 1300;
-
-    gain.gain.value = .7;
-
-    osc1.connect(gain);
-    osc2.connect(gain);
-
-    gain.connect(audioContext.destination);
-
-    osc1.start();
-    osc2.start();
-
-    setTimeout(() => {
-
-        osc1.stop();
-        osc2.stop();
-
-    }, 300);
-
-}
-
-/* =========================
-   ALERT BUTTON
-========================= */
-
-$("#alertToggle").click(async function(){
-
-    if(!audioEnabled){
-
-        await initAudio();
-
-        audioEnabled = true;
-
-        localStorage
-        .setItem(
-            "alerts",
-            "enabled"
-        );
-
-        $(this).html(`
-            <i class="fa-solid fa-volume-xmark"></i>
-            Disable Alerts
-        `);
-
-        $(this)
-        .removeClass("btn-success")
-        .addClass("btn-danger");
-
-        playBeep();
-
-    }else{
-
-        audioEnabled = false;
-
-        localStorage
-        .setItem(
-            "alerts",
-            "disabled"
-        );
-
-        $(this).html(`
-            <i class="fa-solid fa-volume-high"></i>
-            Enable Alerts
-        `);
-
-        $(this)
-        .removeClass("btn-danger")
-        .addClass("btn-success");
-
-    }
-
-});
-
-/* restore state */
-
-if(
-    localStorage
-    .getItem("alerts")
-    === "enabled"
-){
-
-    audioEnabled = true;
-
-    $("#alertToggle")
-    .html(`
-        <i class="fa-solid fa-volume-xmark"></i>
-        Disable Alerts
-    `);
-
-    $("#alertToggle")
-    .removeClass("btn-success")
-    .addClass("btn-danger");
-
-}
-
-/* =========================
-   UI
-========================= */
-
-let total = 0;
-
-/* counter */
-
-function updateCounter(){
-
-    total++;
-
-    $("#counter").text(total);
-
-}
-
-/* toast */
-
-function showToast(){
-
-    const toast = $(`
-        <div class="toast-custom">
-            🔔 New Notification
-        </div>
-    `);
-
-    $("body").append(toast);
-
-    setTimeout(() => {
-
-        toast.remove();
-
-    }, 2500);
-
-}
-
-/* flash */
-
-function flashScreen(){
-
-    $("body").addClass("flash");
-
-    setTimeout(() => {
-
-        $("body")
-        .removeClass("flash");
-
-    }, 400);
-
-}
-
-/* add card */
-
+/* ADD ORDER */
 function addOrder(data){
 
-    const time =
-    new Date()
-    .toLocaleTimeString();
+    orderNumber++;
+
+    const time = new Date().getTime();
 
     const card = $(`
+        <div class="order-card" data-time="${time}">
 
-        <div class="order-card">
+            <div class="d-flex justify-content-between mb-2">
 
-            <div class="
-            d-flex
-            justify-content-between
-            align-items-center
-            mb-3
-            ">
+                <span class="badge bg-primary">#${orderNumber}</span>
 
-                <span class="
-                badge
-                text-bg-success
-                px-3
-                py-2
-                ">
-
-                    NEW
-
-                </span>
-
-                <small class="text-secondary">
-
-                    ${time}
-
-                </small>
+                <small class="text-secondary">${new Date().toLocaleTimeString()}</small>
 
             </div>
 
             <div class="order-title">
-
-                <i class="fa-solid fa-bell"></i>
-
                 ${data.title || "Notification"}
-
             </div>
 
-            <div class="order-text">
-
+            <div class="mb-2">
                 ${data.text || ""}
-
             </div>
+
+            <button class="btn btn-sm btn-success doneBtn">
+                <i class="fa fa-check"></i> Mark as Done
+            </button>
 
         </div>
-
     `);
 
     $("#orders").prepend(card);
 
 }
 
-/* =========================
-   FIREBASE LISTENER
-========================= */
+/* DONE BUTTON */
+$(document).on("click",".doneBtn",function(){
 
-db.ref("orders")
-.on("child_added", function(snapshot){
+    const card = $(this).closest(".order-card");
 
-    const data =
-    snapshot.val();
+    card.addClass("done");
 
-    console.log(
-        "New Notification 🔥",
-        data
-    );
+    $(this)
+    .removeClass("btn-success")
+    .addClass("btn-secondary")
+    .text("Done");
+
+});
+
+/* COUNTER */
+let total = 0;
+
+function updateCounter(){
+    total++;
+    $("#counter").text(total);
+}
+
+/* DELETE AFTER 30 MIN */
+setInterval(()=>{
+
+    const now = new Date().getTime();
+
+    $(".order-card").each(function(){
+
+        const t = $(this).data("time");
+
+        if(now - t > 1800000){ // 30 min
+
+            $(this).fadeOut(300,function(){
+                $(this).remove();
+            });
+
+        }
+
+    });
+
+},60000);
+
+/* FIREBASE LISTENER */
+db.ref("orders").on("child_added",function(snapshot){
+
+    const data = snapshot.val();
 
     updateCounter();
 
     addOrder(data);
 
-    showToast();
-
-    flashScreen();
-
-    playBeep();
-
 });
-
-</script>
-
-<!-- Service Worker -->
-
-<script>
-
-if(
-    'serviceWorker'
-    in navigator
-){
-
-    navigator
-    .serviceWorker
-    .register('./sw.js');
-
-}
 
 </script>
 
 </body>
 </html>
-

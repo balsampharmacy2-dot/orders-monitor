@@ -166,20 +166,34 @@ function playBeep(){
     if(!audioEnabled) return;
     if(!audioContext) return;
 
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
+    const gainNode = audioContext.createGain();
 
-    osc.type = "square";
-    osc.frequency.value = 1000;
+    // 🔊 أعلى صوت
+    gainNode.gain.value = 1.5;
 
-    gain.gain.value = 0.6;
+    const osc1 = audioContext.createOscillator();
+    const osc2 = audioContext.createOscillator();
 
-    osc.connect(gain);
-    gain.connect(audioContext.destination);
+    osc1.type = "square";
+    osc2.type = "sawtooth";
 
-    osc.start();
+    osc1.frequency.value = 1200;
+    osc2.frequency.value = 1800;
 
-    setTimeout(()=>osc.stop(),300);
+    // توصيل
+    osc1.connect(gainNode);
+    osc2.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    // تشغيل
+    osc1.start();
+    osc2.start();
+
+    // مدة أطول = إحساس أعلى
+    setTimeout(() => {
+        osc1.stop();
+        osc2.stop();
+    }, 500);
 
 }
 

@@ -233,7 +233,7 @@ $("#alertToggle").click(async function(){
         .addClass("btn-danger")
         .html("🔇 Disable Sound");
 
-        startAlarm();
+        // ❌ مهم: ممنوع تشغيل أي صوت هنا
 
     }else{
 
@@ -243,6 +243,9 @@ $("#alertToggle").click(async function(){
         .removeClass("btn-danger")
         .addClass("btn-success")
         .html("🔊 Enable Sound");
+
+        // 🔥 هنا فقط نوقف أي صوت شغال
+        stopAlarm();
 
     }
 
@@ -357,7 +360,11 @@ db.ref("orders").on("child_added",function(snapshot){
 
     toast();
     flash();
-    playBeep();
+
+    // 🔥 الصوت هنا فقط
+    if(audioEnabled){
+        startAlarm();
+    }
 
 });
 

@@ -148,6 +148,8 @@ const db = firebase.database();
 
 let audioEnabled = false;
 let audioContext = null;
+let currentOscillators = [];
+let soundInterval = null;
 
 async function initAudio(){
 
@@ -161,39 +163,58 @@ async function initAudio(){
 
 }
 
-function playBeep(){
+function startAlarm(){
 
-    if(!audioEnabled) return;
-    if(!audioContext) return;
+    if(!audioEnabled || !audioContext) return;
 
-    const gainNode = audioContext.createGain();
+    stopAlarm(); // يمنع التكرار
 
-    // 🔊 أعلى صوت
-    gainNode.gain.value = 1.5;
+    soundInterval = setInterval(() => {
 
-    const osc1 = audioContext.createOscillator();
-    const osc2 = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 1.2;
 
-    osc1.type = "square";
-    osc2.type = "sawtooth";
+        const osc1 = audioContext.createOscillator();
+        const osc2 = audioContext.createOscillator();
 
-    osc1.frequency.value = 1200;
-    osc2.frequency.value = 1800;
+        osc1.type = "square";
+        osc2.type = "sawtooth";
 
-    // توصيل
-    osc1.connect(gainNode);
-    osc2.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+        osc1.frequency.value = 1000;
+        osc2.frequency.value = 1500;
 
-    // تشغيل
-    osc1.start();
-    osc2.start();
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
+        gainNode.connect(audioContext.destination);
 
-    // مدة أطول = إحساس أعلى
-    setTimeout(() => {
-        osc1.stop();
-        osc2.stop();
-    }, 500);
+        osc1.start();
+        osc2.start();
+
+        currentOscillators.push(osc1, osc2);
+
+        setTimeout(() => {
+            osc1.stop();
+            osc2.stop();
+        }, 400);
+
+    }, 600); // يتكرر كل 0.6 ثانية
+
+}
+
+function stopAlarm(){
+
+    // وقف التكرار
+    if(soundInterval){
+        clearInterval(soundInterval);
+        soundInterval = null;
+    }
+
+    // وقف أي صوت شغال
+    currentOscillators.forEach(o => {
+        try { o.stop(); } catch(e){}
+    });
+
+    currentOscillators = [];
 
 }
 
@@ -212,7 +233,7 @@ $("#alertToggle").click(async function(){
         .addClass("btn-danger")
         .html("🔇 Disable Sound");
 
-        playBeep();
+        startAlarm();
 
     }else{
 
@@ -300,6 +321,8 @@ $(document).on("click",".doneBtn",function(){
     .removeClass("btn-success")
     .addClass("btn-secondary")
     .text("Done");
+
+    stopAlarm(); // 🔥 أهم سطر
 
 });
 

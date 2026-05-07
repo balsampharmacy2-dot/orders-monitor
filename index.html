@@ -1,113 +1,141 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
-<link rel="manifest" href="manifest.json">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Orders Control Center</title>
 
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- Manifest -->
+<link rel="manifest" href="manifest.json">
+
 <style>
 
-/* ===== BODY ===== */
+/* =========================
+   BODY
+========================= */
 
 body{
-    margin:0;
-    font-family:Arial, sans-serif;
     background:
-    radial-gradient(circle at top,#0f172a,#020617);
+    radial-gradient(circle at top,#111827,#020617);
     color:white;
+    font-family:Arial,sans-serif;
+    min-height:100vh;
     overflow-x:hidden;
 }
 
-/* ===== HEADER ===== */
+/* =========================
+   NAVBAR
+========================= */
 
-.header{
-    position:sticky;
-    top:0;
-    z-index:100;
+.navbar-custom{
+
+    background:rgba(255,255,255,.05);
+
     backdrop-filter:blur(14px);
-    background:rgba(255,255,255,0.05);
-    border-bottom:1px solid rgba(255,255,255,0.08);
 
-    padding:18px;
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    padding:15px 20px;
 }
 
-.logo{
-    font-size:20px;
+/* =========================
+   LIVE BADGE
+========================= */
+
+.live-badge{
+
+    background:#22c55e;
+
+    color:black;
+
     font-weight:bold;
-}
 
-.status{
+    padding:6px 12px;
+
+    border-radius:999px;
+
     font-size:13px;
-    color:#22c55e;
 }
 
-/* ===== COUNTER ===== */
+/* =========================
+   STATS CARD
+========================= */
 
-.stats{
-    padding:15px;
-}
+.stats-card{
 
-.counter-card{
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:18px;
-    padding:18px;
+    background:
+    rgba(255,255,255,.05);
 
-    backdrop-filter:blur(10px);
+    border:
+    1px solid rgba(255,255,255,.08);
 
-    box-shadow:
-    0 8px 30px rgba(0,0,0,0.25);
-}
+    border-radius:24px;
 
-.counter-title{
-    color:#94a3b8;
-    font-size:14px;
-}
-
-.counter-value{
-    font-size:34px;
-    font-weight:bold;
-    margin-top:8px;
-}
-
-/* ===== ORDERS ===== */
-
-.orders{
-    padding:15px;
-    display:grid;
-    gap:14px;
-}
-
-/* ===== CARD ===== */
-
-.card{
-    position:relative;
-
-    background:rgba(255,255,255,0.07);
-    border:1px solid rgba(255,255,255,0.08);
-
-    border-radius:18px;
-
-    padding:18px;
-
-    overflow:hidden;
+    padding:25px;
 
     backdrop-filter:blur(12px);
 
-    animation:show .3s ease;
-
     box-shadow:
-    0 10px 35px rgba(0,0,0,0.3);
+    0 10px 35px rgba(0,0,0,.3);
 }
 
-.card::before{
+.stats-title{
+
+    color:#94a3b8;
+
+    font-size:14px;
+}
+
+.stats-number{
+
+    font-size:40px;
+
+    font-weight:bold;
+
+    margin-top:10px;
+}
+
+/* =========================
+   ORDER CARD
+========================= */
+
+.order-card{
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.3);
+
+    animation:show .35s ease;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.order-card::before{
+
     content:"";
 
     position:absolute;
@@ -129,50 +157,38 @@ body{
     transform:rotate(25deg);
 }
 
-.order-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-bottom:12px;
-}
-
-.badge{
-    background:#22c55e;
-    color:black;
-
-    font-size:12px;
-    font-weight:bold;
-
-    padding:6px 10px;
-
-    border-radius:999px;
-}
-
-.time{
-    color:#94a3b8;
-    font-size:12px;
-}
-
 .order-title{
+
     font-size:18px;
+
     font-weight:bold;
+
     margin-bottom:10px;
 }
 
-.order-json{
+.order-text{
+
     color:#cbd5e1;
-    font-size:13px;
+
+    font-size:14px;
+
     line-height:1.6;
+
     word-break:break-word;
 }
 
-/* ===== POPUP ===== */
+/* =========================
+   TOAST
+========================= */
 
-.popup{
+.toast-custom{
+
     position:fixed;
+
     top:20px;
     right:20px;
+
+    z-index:9999;
 
     background:
     linear-gradient(
@@ -185,25 +201,77 @@ body{
 
     padding:14px 18px;
 
-    border-radius:14px;
+    border-radius:16px;
 
     font-weight:bold;
 
     box-shadow:
     0 10px 30px rgba(0,0,0,.4);
 
-    animation:slide .35s ease;
-
-    z-index:9999;
+    animation:slide .3s ease;
 }
 
-/* ===== FLASH ===== */
+/* =========================
+   ALERT BUTTON
+========================= */
+
+#alertToggle{
+
+    border-radius:14px;
+
+    font-weight:bold;
+
+    padding:10px 18px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes show{
+
+    from{
+        opacity:0;
+        transform:
+        translateY(20px)
+        scale(.95);
+    }
+
+    to{
+        opacity:1;
+        transform:
+        translateY(0)
+        scale(1);
+    }
+
+}
+
+@keyframes slide{
+
+    from{
+        opacity:0;
+        transform:
+        translateX(120px);
+    }
+
+    to{
+        opacity:1;
+        transform:
+        translateX(0);
+    }
+
+}
+
+/* =========================
+   FLASH
+========================= */
 
 .flash{
-    animation:flashAnim .5s;
+    animation:flash .4s;
 }
 
-@keyframes flashAnim{
+@keyframes flash{
+
     0%{
         background:#14532d;
     }
@@ -211,93 +279,91 @@ body{
     100%{
         background:transparent;
     }
-}
-
-/* ===== ANIMATIONS ===== */
-
-@keyframes show{
-    from{
-        opacity:0;
-        transform:translateY(20px) scale(.95);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0) scale(1);
-    }
-}
-
-@keyframes slide{
-    from{
-        opacity:0;
-        transform:translateX(120px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateX(0);
-    }
-}
-
-/* ===== MOBILE ===== */
-
-@media(max-width:600px){
-
-    .counter-value{
-        font-size:28px;
-    }
-
-    .order-title{
-        font-size:16px;
-    }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- =========================
+     NAVBAR
+========================= -->
 
-<div class="header">
+<nav class="navbar navbar-custom">
 
-    <div class="logo">
-        🔥 Orders Control
+<div class="container-fluid">
+
+    <div class="d-flex align-items-center gap-3">
+
+        <h4 class="m-0">
+            <i class="fa-solid fa-bolt"></i>
+            Orders Control
+        </h4>
+
+        <div class="live-badge">
+            LIVE
+        </div>
+
     </div>
 
-    <div class="status">
-        ● LIVE
-    </div>
+    <button
+    class="btn btn-success"
+    id="alertToggle">
+
+        <i class="fa-solid fa-volume-high"></i>
+        Enable Alerts
+
+    </button>
 
 </div>
 
-<!-- STATS -->
+</nav>
 
-<div class="stats">
+<!-- =========================
+     CONTENT
+========================= -->
 
-    <div class="counter-card">
+<div class="container py-4">
 
-        <div class="counter-title">
-            Total Orders
+    <!-- Stats -->
+
+    <div class="stats-card mb-4">
+
+        <div class="stats-title">
+            TOTAL NOTIFICATIONS
         </div>
 
-        <div class="counter-value" id="counter">
+        <div
+        class="stats-number"
+        id="counter">
+
             0
+
         </div>
+
+    </div>
+
+    <!-- Orders -->
+
+    <div
+    class="d-grid gap-3"
+    id="orders">
 
     </div>
 
 </div>
 
-<!-- ORDERS -->
-
-<div class="orders" id="orders"></div>
-
-<!-- FIREBASE -->
+<!-- Firebase -->
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<!-- jQuery -->
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script>
 
@@ -308,10 +374,10 @@ body{
 const firebaseConfig = {
 
     apiKey:
-    "AIzaSyBFI9O0DcZcZJJgwFp6cCgd8PJU2PRC9z8",
+    "YOUR_API_KEY",
 
     databaseURL:
-    "https://orders-app-34ff4-default-rtdb.firebaseio.com"
+    "YOUR_DATABASE_URL"
 
 };
 
@@ -323,9 +389,11 @@ const db = firebase.database();
    AUDIO
 ========================= */
 
+let audioEnabled = false;
+
 let audioContext = null;
 
-/* enable audio */
+/* init audio */
 
 async function initAudio(){
 
@@ -343,19 +411,15 @@ async function initAudio(){
         await audioContext.resume();
     }
 
-    beep();
-
 }
 
 /* beep */
 
-async function beep(){
+async function playBeep(){
+
+    if(!audioEnabled) return;
 
     if(!audioContext) return;
-
-    if(audioContext.state === "suspended"){
-        await audioContext.resume();
-    }
 
     const osc1 =
     audioContext.createOscillator();
@@ -372,7 +436,7 @@ async function beep(){
     osc1.frequency.value = 900;
     osc2.frequency.value = 1300;
 
-    gain.gain.value = 0.8;
+    gain.gain.value = .7;
 
     osc1.connect(gain);
     osc2.connect(gain);
@@ -387,17 +451,83 @@ async function beep(){
         osc1.stop();
         osc2.stop();
 
-    }, 350);
+    }, 300);
 
 }
 
-/* first click unlock */
+/* =========================
+   ALERT BUTTON
+========================= */
 
-document.addEventListener("click", () => {
+$("#alertToggle").click(async function(){
 
-    initAudio();
+    if(!audioEnabled){
 
-}, { once:true });
+        await initAudio();
+
+        audioEnabled = true;
+
+        localStorage
+        .setItem(
+            "alerts",
+            "enabled"
+        );
+
+        $(this).html(`
+            <i class="fa-solid fa-volume-xmark"></i>
+            Disable Alerts
+        `);
+
+        $(this)
+        .removeClass("btn-success")
+        .addClass("btn-danger");
+
+        playBeep();
+
+    }else{
+
+        audioEnabled = false;
+
+        localStorage
+        .setItem(
+            "alerts",
+            "disabled"
+        );
+
+        $(this).html(`
+            <i class="fa-solid fa-volume-high"></i>
+            Enable Alerts
+        `);
+
+        $(this)
+        .removeClass("btn-danger")
+        .addClass("btn-success");
+
+    }
+
+});
+
+/* restore state */
+
+if(
+    localStorage
+    .getItem("alerts")
+    === "enabled"
+){
+
+    audioEnabled = true;
+
+    $("#alertToggle")
+    .html(`
+        <i class="fa-solid fa-volume-xmark"></i>
+        Disable Alerts
+    `);
+
+    $("#alertToggle")
+    .removeClass("btn-success")
+    .addClass("btn-danger");
+
+}
 
 /* =========================
    UI
@@ -405,23 +535,31 @@ document.addEventListener("click", () => {
 
 let total = 0;
 
-/* popup */
+/* counter */
 
-function showPopup(){
+function updateCounter(){
 
-    const div =
-    document.createElement("div");
+    total++;
 
-    div.className = "popup";
+    $("#counter").text(total);
 
-    div.innerHTML =
-    "🔔 New Order Received";
+}
 
-    document.body.appendChild(div);
+/* toast */
+
+function showToast(){
+
+    const toast = $(`
+        <div class="toast-custom">
+            🔔 New Notification
+        </div>
+    `);
+
+    $("body").append(toast);
 
     setTimeout(() => {
 
-        div.remove();
+        toast.remove();
 
     }, 2500);
 
@@ -431,67 +569,74 @@ function showPopup(){
 
 function flashScreen(){
 
-    document.body.classList.add("flash");
+    $("body").addClass("flash");
 
     setTimeout(() => {
 
-        document.body.classList.remove("flash");
+        $("body")
+        .removeClass("flash");
 
-    }, 500);
+    }, 400);
 
 }
 
-/* add order */
+/* add card */
 
 function addOrder(data){
 
-    const div =
-    document.createElement("div");
+    const time =
+    new Date()
+    .toLocaleTimeString();
 
-    div.className = "card";
+    const card = $(`
 
-    const now =
-    new Date().toLocaleTimeString();
+        <div class="order-card">
 
-    div.innerHTML = `
+            <div class="
+            d-flex
+            justify-content-between
+            align-items-center
+            mb-3
+            ">
 
-        <div class="order-top">
+                <span class="
+                badge
+                text-bg-success
+                px-3
+                py-2
+                ">
 
-            <div class="badge">
-                NEW ORDER
+                    NEW
+
+                </span>
+
+                <small class="text-secondary">
+
+                    ${time}
+
+                </small>
+
             </div>
 
-            <div class="time">
-                ${now}
+            <div class="order-title">
+
+                <i class="fa-solid fa-bell"></i>
+
+                ${data.title || "Notification"}
+
+            </div>
+
+            <div class="order-text">
+
+                ${data.text || ""}
+
             </div>
 
         </div>
 
-        <div class="order-title">
-    🔔 ${data.title || "New Notification"}
-        </div>
-        
-        <div class="order-json">
-            ${data.text || ""}
-        </div>
-        
-    `;
+    `);
 
-    document
-    .getElementById("orders")
-    .prepend(div);
-
-}
-
-/* counter */
-
-function updateCounter(){
-
-    total++;
-
-    document
-    .getElementById("counter")
-    .innerText = total;
+    $("#orders").prepend(card);
 
 }
 
@@ -502,10 +647,11 @@ function updateCounter(){
 db.ref("orders")
 .on("child_added", function(snapshot){
 
-    const data = snapshot.val();
+    const data =
+    snapshot.val();
 
     console.log(
-        "New Order 🔥",
+        "New Notification 🔥",
         data
     );
 
@@ -513,20 +659,33 @@ db.ref("orders")
 
     addOrder(data);
 
-    showPopup();
+    showToast();
 
     flashScreen();
 
-    beep();
+    playBeep();
 
 });
 
 </script>
+
+<!-- Service Worker -->
+
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js');
+
+if(
+    'serviceWorker'
+    in navigator
+){
+
+    navigator
+    .serviceWorker
+    .register('./sw.js');
+
 }
+
 </script>
+
 </body>
 </html>
-
+```
